@@ -51,6 +51,11 @@ open class KotlinPlugin(world: World, context: PluginContext,
                 .then { action.invoke(it, this) }
         }
 
+        onRegionChanged()?.let { action ->
+            on { RegionChangeMessage::class }
+                .then { action.invoke(it, this) }
+        }
+
         onLogout()?.let { action ->
             world.listenFor(LogoutEvent::class.java) {
                 action.invoke(it)
@@ -84,7 +89,7 @@ open class KotlinPlugin(world: World, context: PluginContext,
     open fun onNpcSecondAction(): ((Player, NpcActionMessage) -> Unit)? = null
     open fun onNpcThirdAction(): ((Player, NpcActionMessage) -> Unit)? = null
     open fun onFlashingTabClicked(): ((Player, FlashingTabClickedMessage) -> Unit)? = null
-
+    open fun onRegionChanged(): ((Player, RegionChangeMessage) -> Unit)? = null
     open fun onButton(): ((Player, ButtonMessage) -> Unit)? = null
     open fun spawnNpcs():(() -> Unit)? = null
     open fun start(): ((World) -> Unit)? = null
