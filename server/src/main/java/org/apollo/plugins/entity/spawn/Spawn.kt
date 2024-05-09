@@ -6,11 +6,11 @@ import org.apollo.game.model.Graphic
 import org.apollo.game.model.Position
 
 fun spawnNpc(name: String, x: Int, y: Int, z: Int = 0, id: Int? = null, facing: Direction = Direction.NORTH) {
-    Spawns.list += org.apollo.plugins.entity.spawn.Spawn(id, name, Position(x, y, z), facing)
+    Spawns.list += Spawn(id, name, Position(x, y, z), facing)
 }
 
 fun spawnNpc(name: String, position: Position, id: Int? = null, facing: Direction = Direction.NORTH) {
-    Spawns.list += org.apollo.plugins.entity.spawn.Spawn(id, name, position, facing)
+    Spawns.list += Spawn(id, name, position, facing)
 }
 
 internal data class Spawn(

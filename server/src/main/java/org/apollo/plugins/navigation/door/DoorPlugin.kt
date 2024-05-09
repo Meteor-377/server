@@ -8,8 +8,10 @@ import org.apollo.game.plugin.KotlinPlugin
 import org.apollo.game.plugin.PluginContext
 import org.apollo.plugins.navigation.door.doors.TutorialDoor1
 
-class DoorPlugin(world: World, context: PluginContext) : KotlinPlugin(world, context,
-    name = "Doors", author = "Apollo") {
+class DoorPlugin(world: World, context: PluginContext) : KotlinPlugin(
+    world, context,
+    name = "Doors", author = "Apollo"
+) {
     companion object {
         val requirementDoors = arrayOf<RequirementDoor>(TutorialDoor1)
     }

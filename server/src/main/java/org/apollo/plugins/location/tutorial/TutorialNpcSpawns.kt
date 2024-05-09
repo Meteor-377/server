@@ -6,8 +6,10 @@ import org.apollo.game.plugin.KotlinPlugin
 import org.apollo.game.plugin.PluginContext
 import org.apollo.plugins.entity.spawn.spawnNpc
 
-class TutorialNpcSpawns(world: World, context: PluginContext) : KotlinPlugin(world, context,
-    name = "Tutorial Npc Spawns", author = "Apollo") {
+class TutorialNpcSpawns(world: World, context: PluginContext) : KotlinPlugin(
+    world, context,
+    name = "Tutorial Npc Spawns", author = "Apollo"
+) {
 
     override fun spawnNpcs(): (() -> Unit) = {
         // Functional npcs

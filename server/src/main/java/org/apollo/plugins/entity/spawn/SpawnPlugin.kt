@@ -6,8 +6,10 @@ import org.apollo.game.plugin.KotlinPlugin
 import org.apollo.game.plugin.PluginContext
 import org.apollo.game.plugin.api.Definitions
 
-class SpawnPlugin(world: World, context: PluginContext) : KotlinPlugin(world, context,
-    name = "Spawn", author = "Apollo") {
+class SpawnPlugin(world: World, context: PluginContext) : KotlinPlugin(
+    world, context,
+    name = "Spawn", author = "Apollo"
+) {
     override fun start() = { world: World ->
         for ((id, name, position, facing, animation, graphic) in Spawns.list) {
             val definition = requireNotNull(id?.let(Definitions::npc) ?: Definitions.npc(name)) {

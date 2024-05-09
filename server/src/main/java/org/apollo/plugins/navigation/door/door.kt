@@ -54,7 +54,7 @@ open class Door(private val gameObject: GameObject?) {
 
     fun toggle() {
         val world = gameObject!!.world
-        val region = world.regionRepository.fromPosition(gameObject!!.position)
+        val region = world.regionRepository.fromPosition(gameObject.position)
 
         region.removeEntity(gameObject)
 
@@ -64,7 +64,8 @@ open class Door(private val gameObject: GameObject?) {
             val position = gameObject.position.step(1, Direction.WNES[gameObject.orientation])
             val orientation = translateDirection()?.toOrientationInteger() ?: gameObject.orientation
 
-            val toggledDoor = DynamicGameObject.createPublic(world, gameObject.id, position, gameObject.type, orientation)
+            val toggledDoor =
+                DynamicGameObject.createPublic(world, gameObject.id, position, gameObject.type, orientation)
 
             region.addEntity(toggledDoor)
             toggledDoors[toggledDoor] = gameObject

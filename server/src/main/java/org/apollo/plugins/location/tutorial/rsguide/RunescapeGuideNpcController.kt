@@ -11,15 +11,15 @@ import org.apollo.game.model.entity.attr.AttributePersistence
 import org.apollo.game.model.event.impl.LoginEvent
 import org.apollo.game.plugin.KotlinPlugin
 import org.apollo.game.plugin.PluginContext
-import org.apollo.plugins.location.tutorial.TutorialPlugin
 import org.apollo.plugins.location.tutorial.TutorialPlugin.Companion.getTutorialProgress
 import org.apollo.plugins.location.tutorial.TutorialPlugin.Companion.inTutorial
 import org.apollo.plugins.location.tutorial.rsguide.chat.Chat0
-import org.apollo.plugins.location.tutorial.rsguide.chat.Chat1b
 import org.apollo.plugins.location.tutorial.rsguide.chat.Chat5
 
-class RunescapeGuideNpcController(world: World, context: PluginContext) : KotlinPlugin(world, context,
-    name = "Runescape Guide Controller", author = "Null") {
+class RunescapeGuideNpcController(world: World, context: PluginContext) : KotlinPlugin(
+    world, context,
+    name = "Runescape Guide Controller", author = "Null"
+) {
 
     init {
         AttributeMap.define("tutorial_progress", AttributeDefinition.forInt(0, AttributePersistence.PERSISTENT))
@@ -39,7 +39,7 @@ class RunescapeGuideNpcController(world: World, context: PluginContext) : Kotlin
         npc = world.npcRepository.first { it.definition.name == "RuneScape Guide" }
         if (event.player.inTutorial()) {
             when (event.player.getTutorialProgress()) {
-                0L,1L ->  event.player.send(MobHintIconMessage.create(npc))
+                0L, 1L -> event.player.send(MobHintIconMessage.create(npc))
             }
         }
     }

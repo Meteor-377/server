@@ -1,15 +1,12 @@
 package org.apollo.plugins.location.tutorial.rsguide.chat
 
-import org.apollo.game.message.impl.ConfigMessage
 import org.apollo.game.message.impl.HintIconMessage
 import org.apollo.game.message.impl.PositionHintIconMessage
 import org.apollo.game.model.Position
 import org.apollo.game.model.entity.Npc
 import org.apollo.game.model.entity.Player
-import org.apollo.game.model.entity.attr.NumericalAttribute
-import org.apollo.plugins.api.dialogue.ChatNpcAction
 import org.apollo.plugins.api.ChatEmotes
-import org.apollo.plugins.api.VarpID
+import org.apollo.plugins.api.dialogue.ChatNpcAction
 import org.apollo.plugins.api.dialogue.DialogueResponse
 import org.apollo.plugins.location.tutorial.TutorialPlugin
 import org.apollo.plugins.location.tutorial.TutorialPlugin.Companion.setTutorialProgress
@@ -17,10 +14,12 @@ import org.apollo.plugins.location.tutorial.TutorialPlugin.Companion.setTutorial
 class Chat6(npc: Npc) : DialogueResponse(npc) {
     override fun send(player: Player) {
         ChatNpcAction.start(player, npc.position) {
-            player.sendNpc2Dialogue(npc, ChatEmotes.DEFAULT,
+            player.sendNpc2Dialogue(
+                npc, ChatEmotes.DEFAULT,
                 "To continue the tutorial go through that door over",
                 "there and speak to your first instructor!",
-                this)
+                this
+            )
         }
     }
 

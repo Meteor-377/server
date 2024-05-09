@@ -17,10 +17,13 @@ import org.apollo.plugins.api.ComID.TUTORIAL_INFO_LINE4
 import org.apollo.plugins.api.ComID.TUTORIAL_INFO_TITLE
 import org.apollo.plugins.api.ComID.TUTORIAL_PROGRESS_ARROW_LAYER
 import org.apollo.plugins.api.ComID.TUTORIAL_PROGRESS_ROOT
+import org.apollo.plugins.api.TabID
 import org.apollo.plugins.api.VarpID
 
-class TutorialPlugin(world: World, context: PluginContext) : KotlinPlugin(world, context,
-    name = "Tutorial", author = "Null") {
+class TutorialPlugin(world: World, context: PluginContext) : KotlinPlugin(
+    world, context,
+    name = "Tutorial", author = "Null"
+) {
 
     override fun onLogin() = { event: LoginEvent ->
         if (event.player.inTutorial()) {
@@ -32,34 +35,38 @@ class TutorialPlugin(world: World, context: PluginContext) : KotlinPlugin(world,
             event.player.send(SetWidgetVisibilityMessage(TUTORIAL_PROGRESS_ARROW_LAYER, false))
             //Define tutorial_progress so we can access it without worrying about nullability
             event.player.attributes.putIfAbsent("tutorial_progress", NumericalAttribute(0L))
-                when (event.player.getTutorialProgress()) {
-                    0L -> {
-                        event.player.send(ConfigMessage(VarpID.TUTORIAL_PROGRESS_BAR_VARP, 0))
-                        updateTabs(event.player, TUTORIAL_STEP0_TABS)
-                        sendGettingStarted(event.player)
-                    }
-                    1L,2L -> {
-                        event.player.send(ConfigMessage(VarpID.TUTORIAL_PROGRESS_BAR_VARP, 0))
-                        updateTabs(event.player, TUTORIAL_STEP1_TABS)
-                        sendSettingsStep(event.player)
-                    }
-                    3L -> {
-                        event.player.send(ConfigMessage(VarpID.TUTORIAL_PROGRESS_BAR_VARP, 0))
-                        updateTabs(event.player, TUTORIAL_STEP1_TABS)
-                        sendInteractingWithScenery(event.player)
-                    }
-                    4L -> {
-                        event.player.send(ConfigMessage(VarpID.TUTORIAL_PROGRESS_BAR_VARP, 3))
-                        updateTabs(event.player, TUTORIAL_STEP1_TABS)
-                        sendMovingAround(event.player)
-                    }
+            //Send tutorial state
+            when (event.player.getTutorialProgress()) {
+                0L -> {
+                    event.player.send(ConfigMessage(VarpID.TUTORIAL_PROGRESS_BAR_VARP, 0))
+                    updateTabs(event.player, TUTORIAL_STEP0_TABS)
+                    sendGettingStarted(event.player)
+                }
+
+                1L, 2L -> {
+                    event.player.send(ConfigMessage(VarpID.TUTORIAL_PROGRESS_BAR_VARP, 0))
+                    updateTabs(event.player, TUTORIAL_STEP1_TABS)
+                    sendSettingsStep(event.player)
+                }
+
+                3L -> {
+                    event.player.send(ConfigMessage(VarpID.TUTORIAL_PROGRESS_BAR_VARP, 0))
+                    updateTabs(event.player, TUTORIAL_STEP1_TABS)
+                    sendInteractingWithScenery(event.player)
+                }
+
+                4L -> {
+                    event.player.send(ConfigMessage(VarpID.TUTORIAL_PROGRESS_BAR_VARP, 3))
+                    updateTabs(event.player, TUTORIAL_STEP1_TABS)
+                    sendMovingAround(event.player)
                 }
             }
+        }
         println("position : ${event.player.position}")
     }
 
     override fun onFlashingTabClicked() = { player: Player, event: FlashingTabClickedMessage ->
-        if (event.tab == 11) {
+        if (event.tab == TabID.SETTINGS) {
             sendPlayerControls(player)
             player.setTutorialProgress(2L)
         }
@@ -89,31 +96,37 @@ class TutorialPlugin(world: World, context: PluginContext) : KotlinPlugin(world,
     }
 
     fun sendGettingStarted(player: Player) {
-        sendTutorialInfo(player,
+        sendTutorialInfo(
+            player,
             "@blu@Getting started",
             "To start the tutorial use your left mouse-button to click on the",
             "'Runescape Guide' in this room. He is indicated by a flashing",
             "yellow arrow above his head. If you can't see him, use your",
-            "keyboard's arrow keys to rotate the view.")
+            "keyboard's arrow keys to rotate the view."
+        )
     }
 
     fun sendPlayerControls(player: Player) {
-        sendTutorialInfo(player,
+        sendTutorialInfo(
+            player,
             "@blu@Player controls",
             "On the side panel, you can now see a variety of options from",
             "changing the brightness of the screen and the volume of",
             "music, to selecting whether your player should accept help",
-            "from other players. Don't worry about these too much for now.")
+            "from other players. Don't worry about these too much for now."
+        )
     }
 
     companion object {
         fun sendMovingAround(player: Player) {
-            sendTutorialInfo(player,
+            sendTutorialInfo(
+                player,
                 "@blu@Moving around",
                 "Follow the path to find the next instructor. Clicking on the",
                 "ground will walk you to that point. You can also move around by",
                 "clicking a point on the minimap in the top right corner. Talk to",
-                "the survival expert to continue the tutorial.")
+                "the survival expert to continue the tutorial."
+            )
         }
 
         fun sendTutorialInfo(
@@ -130,12 +143,14 @@ class TutorialPlugin(world: World, context: PluginContext) : KotlinPlugin(world,
         }
 
         fun sendSettingsStep(player: Player) {
-            sendTutorialInfo(player,
+            sendTutorialInfo(
+                player,
                 "@blu@Player controls",
                 "Please click on the flashing wrench icon found at the bottom",
                 "right of your screen. This will display your player controls.",
                 "",
-                "")
+                ""
+            )
             player.setTutorialProgress(1L)
             updateTabs(player, TUTORIAL_STEP1_TABS)
             player.send(FlashTabInterfaceMessage(11))
@@ -158,7 +173,7 @@ class TutorialPlugin(world: World, context: PluginContext) : KotlinPlugin(world,
 
 
         //TODO: Use actual bounds
-        fun Player.inTutorial() : Boolean {
+        fun Player.inTutorial(): Boolean {
             if (position.x in 3000..3200)
                 if (position.y in 3000..3200)
                     return true
