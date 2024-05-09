@@ -1,5 +1,8 @@
 package org.apollo.plugins.location.tutorial.rsguide.chat
 
+import org.apollo.game.message.impl.HintIconMessage
+import org.apollo.game.message.impl.MobHintIconMessage
+import org.apollo.game.model.entity.EntityType
 import org.apollo.game.model.entity.Npc
 import org.apollo.game.model.entity.Player
 import org.apollo.plugins.api.ChatEmotes
@@ -20,6 +23,7 @@ class Chat4(npc: Npc) : DialogueResponse(npc) {
     }
 
     override fun continued(player: Player) {
+        player.send(MobHintIconMessage.reset(EntityType.NPC))
         TutorialPlugin.sendSettingsStep(player)
     }
 }

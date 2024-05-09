@@ -179,6 +179,8 @@ public final class Release377 extends Release {
 		register(OpenSidebarMessage.class, new OpenSidebarMessageEncoder());
 		register(OpenOverlayMessage.class, new OpenOverlayMessageEncoder());
 		register(OpenDialogueOverlayMessage.class, new OpenDialogueOverlayMessageEncoder());
+
+		register(PlayMidiMessage.class, new PlayMidiMessageEncoder());
 	}
 
 }

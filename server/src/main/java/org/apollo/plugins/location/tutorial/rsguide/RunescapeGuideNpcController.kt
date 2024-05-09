@@ -25,7 +25,9 @@ class RunescapeGuideNpcController(world: World, context: PluginContext) : Kotlin
         AttributeMap.define("tutorial_progress", AttributeDefinition.forInt(0, AttributePersistence.PERSISTENT))
     }
 
-    lateinit var npc: Npc
+    companion object {
+        lateinit var npc: Npc
+    }
 
     override fun onNpcFirstAction() = { player: Player, npcActionMessage: NpcActionMessage ->
         player.sendMessage("Npc idx:${npcActionMessage.index} option:${npcActionMessage.option}")

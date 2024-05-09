@@ -3,6 +3,7 @@ package org.apollo.plugins.location.tutorial
 import org.apollo.game.message.impl.*
 import org.apollo.game.model.Position
 import org.apollo.game.model.World
+import org.apollo.game.model.entity.EntityType
 import org.apollo.game.model.entity.Player
 import org.apollo.game.model.entity.attr.Attribute
 import org.apollo.game.model.entity.attr.NumericalAttribute
@@ -19,6 +20,7 @@ import org.apollo.plugins.api.ComID.TUTORIAL_PROGRESS_ARROW_LAYER
 import org.apollo.plugins.api.ComID.TUTORIAL_PROGRESS_ROOT
 import org.apollo.plugins.api.TabID
 import org.apollo.plugins.api.VarpID
+import org.apollo.plugins.location.tutorial.rsguide.RunescapeGuideNpcController
 
 class TutorialPlugin(world: World, context: PluginContext) : KotlinPlugin(
     world, context,
@@ -27,11 +29,13 @@ class TutorialPlugin(world: World, context: PluginContext) : KotlinPlugin(
 
     override fun onLogin() = { event: LoginEvent ->
         if (event.player.inTutorial()) {
+            event.player.send(PlayMidiMessage(62, 0))
             //Prevent closing dialogue when walking/interacting
             //Players should not be able to talk until completing tutorial
             event.player.interfaceSet.canClose = false
             event.player.interfaceSet.openOverlay(TUTORIAL_PROGRESS_ROOT)
-            //This layer is shown by default, and must be hidden TODO: should show if player taking too long
+            //TODO: should show if player taking too long
+            //This layer is shown by default, and must be hidden
             event.player.send(SetWidgetVisibilityMessage(TUTORIAL_PROGRESS_ARROW_LAYER, false))
             //Define tutorial_progress so we can access it without worrying about nullability
             event.player.attributes.putIfAbsent("tutorial_progress", NumericalAttribute(0L))
@@ -67,12 +71,13 @@ class TutorialPlugin(world: World, context: PluginContext) : KotlinPlugin(
 
     override fun onFlashingTabClicked() = { player: Player, event: FlashingTabClickedMessage ->
         if (event.tab == TabID.SETTINGS) {
+            player.send(MobHintIconMessage.create(RunescapeGuideNpcController.npc))
             sendPlayerControls(player)
             player.setTutorialProgress(2L)
         }
     }
 
-    override fun onWalkAction() = { player: Player, event: WalkMessage ->
+    override fun onWalkAction() = { player: Player, _: WalkMessage ->
         if (!player.interfaceSet.contains(TUTORIAL_INFO)) {
             when (player.getTutorialProgress()) {
                 0L -> sendGettingStarted(player)
