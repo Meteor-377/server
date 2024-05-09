@@ -4,7 +4,7 @@ import org.apollo.game.model.Direction
 import org.apollo.game.model.World
 import org.apollo.game.plugin.KotlinPlugin
 import org.apollo.game.plugin.PluginContext
-import org.apollo.plugins.entity.spawn.spawnNpc
+import org.apollo.plugins.spawn.spawnNpc
 
 class TutorialNpcSpawns(world: World, context: PluginContext) : KotlinPlugin(
     world, context,

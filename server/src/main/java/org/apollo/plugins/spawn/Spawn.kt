@@ -1,4 +1,4 @@
-package org.apollo.plugins.entity.spawn
+package org.apollo.plugins.spawn
 
 import org.apollo.game.model.Animation
 import org.apollo.game.model.Direction
