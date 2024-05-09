@@ -12,6 +12,7 @@ import org.apollo.plugins.api.ChatEmotes
 import org.apollo.plugins.api.VarpID
 import org.apollo.plugins.api.dialogue.DialogueResponse
 import org.apollo.plugins.location.tutorial.TutorialPlugin
+import org.apollo.plugins.location.tutorial.TutorialPlugin.Companion.setTutorialProgress
 
 class Chat6(npc: Npc) : DialogueResponse(npc) {
     override fun send(player: Player) {
@@ -24,7 +25,7 @@ class Chat6(npc: Npc) : DialogueResponse(npc) {
     }
 
     override fun continued(player: Player) {
-        TutorialPlugin.setTutorialProgress(player, 3L)
+        player.setTutorialProgress(3L)
         player.send(PositionHintIconMessage(HintIconMessage.Type.EAST, Position(3097, 3107), 120))
         TutorialPlugin.sendTutorialInfo(
             player,

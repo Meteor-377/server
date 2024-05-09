@@ -24,11 +24,15 @@ class TutorialPlugin(world: World, context: PluginContext) : KotlinPlugin(world,
 
     override fun onLogin() = { event: LoginEvent ->
         if (event.player.inTutorial()) {
+            //Prevent closing dialogue when walking/interacting
+            //Players should not be able to talk until completing tutorial
             event.player.interfaceSet.canClose = false
             event.player.interfaceSet.openOverlay(TUTORIAL_PROGRESS_ROOT)
+            //This layer is shown by default, and must be hidden TODO: should show if player taking too long
             event.player.send(SetWidgetVisibilityMessage(TUTORIAL_PROGRESS_ARROW_LAYER, false))
+            //Define tutorial_progress so we can access it without worrying about nullability
             event.player.attributes.putIfAbsent("tutorial_progress", NumericalAttribute(0L))
-                when (getTutorialProgress(event.player)) {
+                when (event.player.getTutorialProgress()) {
                     0L -> {
                         event.player.send(ConfigMessage(VarpID.TUTORIAL_PROGRESS_BAR_VARP, 0))
                         updateTabs(event.player, TUTORIAL_STEP0_TABS)
@@ -57,13 +61,13 @@ class TutorialPlugin(world: World, context: PluginContext) : KotlinPlugin(world,
     override fun onFlashingTabClicked() = { player: Player, event: FlashingTabClickedMessage ->
         if (event.tab == 11) {
             sendPlayerControls(player)
-            setTutorialProgress(player, 2L)
+            player.setTutorialProgress(2L)
         }
     }
 
     override fun onWalkAction() = { player: Player, event: WalkMessage ->
         if (!player.interfaceSet.contains(TUTORIAL_INFO)) {
-            when (getTutorialProgress(player)) {
+            when (player.getTutorialProgress()) {
                 0L -> sendGettingStarted(player)
                 1L, 2L -> sendPlayerControls(player)
                 3L -> sendInteractingWithScenery(player)
@@ -132,7 +136,7 @@ class TutorialPlugin(world: World, context: PluginContext) : KotlinPlugin(world,
                 "right of your screen. This will display your player controls.",
                 "",
                 "")
-            setTutorialProgress(player, 1L)
+            player.setTutorialProgress(1L)
             updateTabs(player, TUTORIAL_STEP1_TABS)
             player.send(FlashTabInterfaceMessage(11))
         }
@@ -143,16 +147,17 @@ class TutorialPlugin(world: World, context: PluginContext) : KotlinPlugin(world,
             }
         }
 
-        fun getTutorialProgress(player: Player): Long {
-            val tutorialProgress: Attribute<*> = player.getAttribute("tutorial_progress")
+        fun Player.getTutorialProgress(): Long {
+            val tutorialProgress: Attribute<*> = getAttribute("tutorial_progress")
             return tutorialProgress.value as Long
         }
 
-        fun setTutorialProgress(player: Player, progress: Long) {
-            player.setAttribute("tutorial_progress", NumericalAttribute(progress))
+        fun Player.setTutorialProgress(progress: Long) {
+            setAttribute("tutorial_progress", NumericalAttribute(progress))
         }
 
 
+        //TODO: Use actual bounds
         fun Player.inTutorial() : Boolean {
             if (position.x in 3000..3200)
                 if (position.y in 3000..3200)

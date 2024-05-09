@@ -6,6 +6,7 @@ import org.apollo.plugins.api.dialogue.ChatNpcAction
 import org.apollo.plugins.api.ChatEmotes
 import org.apollo.plugins.api.dialogue.DialogueResponse
 import org.apollo.plugins.location.tutorial.TutorialPlugin
+import org.apollo.plugins.location.tutorial.TutorialPlugin.Companion.getTutorialProgress
 
 class Chat2(npc: Npc) : DialogueResponse(npc) {
     override fun send(player: Player) {
@@ -19,7 +20,7 @@ class Chat2(npc: Npc) : DialogueResponse(npc) {
     }
 
     override fun continued(player: Player) {
-        if (TutorialPlugin.getTutorialProgress(player) >= 1L)
+        if (player.getTutorialProgress() >= 1L)
             Chat4(npc).send(player)
         else
             Chat3(npc).send(player)
