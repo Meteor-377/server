@@ -9,6 +9,8 @@ import org.apollo.ServerContext
 import org.apollo.ServiceManager
 import org.apollo.cache.IndexedFileSystem
 import org.apollo.game.model.World
+import org.apollo.game.plugin.PluginContext
+import org.apollo.game.plugin.PluginManager
 import org.apollo.game.release.r377.Release377
 import org.apollo.game.session.ApolloHandler
 import org.apollo.net.HttpChannelInitializer
@@ -66,9 +68,10 @@ object Main {
         jaggrabBootstrap.channel(NioServerSocketChannel::class.java)
         jaggrabBootstrap.childHandler(jaggrab)
 
+        val manager = PluginManager(world, PluginContext(context))
         services.startAll()
 
-        world.init(fs)
+        world.init(fs, manager)
     }
 
     @Throws(IOException::class)

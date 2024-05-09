@@ -17,9 +17,11 @@ import org.apollo.game.model.area.RegionRepository;
 import org.apollo.game.model.area.collision.CollisionManager;
 import org.apollo.game.model.area.collision.CollisionUpdateListener;
 import org.apollo.game.model.entity.*;
+import org.apollo.game.model.entity.path.SimplePathfindingAlgorithm;
 import org.apollo.game.model.event.Event;
 import org.apollo.game.model.event.EventListener;
 import org.apollo.game.model.event.EventListenerChainSet;
+import org.apollo.game.plugin.PluginManager;
 import org.apollo.game.scheduling.ScheduledTask;
 import org.apollo.game.scheduling.Scheduler;
 import org.apollo.game.scheduling.impl.NpcMovementTask;
@@ -121,6 +123,11 @@ public final class World {
 	 */
 	private NpcMovementTask npcMovement;
 
+	/**
+	 * The {@link PluginManager}.
+	 */
+	private PluginManager pluginManager;
+
 
 	/**
 	 * The release number (i.e. version) of this world.
@@ -191,6 +198,8 @@ public final class World {
 		return releaseNumber;
 	}
 
+	public SimplePathfindingAlgorithm pathFinding = new SimplePathfindingAlgorithm(getCollisionManager());
+
 	/**
 	 * Initialises the world by loading definitions from the specified file
 	 * system.
@@ -198,7 +207,7 @@ public final class World {
 	 * @param fs The file system.
 	 * @throws Exception If there was a failure when loading plugins.
 	 */
-	public void init(IndexedFileSystem fs) throws Exception {
+	public void init(IndexedFileSystem fs, PluginManager manager) throws Exception {
 		releaseNumber = 377;
 
 		SynchronousDecoder firstStageDecoder = new SynchronousDecoder(
@@ -224,6 +233,10 @@ public final class World {
 
 		npcMovement = new NpcMovementTask(collisionManager); // Must be exactly here because of ordering issues.
 		scheduler.schedule(npcMovement);
+
+		manager.start();
+		commandDispatcher.init(manager.getAuthors());
+		pluginManager = manager;
 	}
 
 	/**
@@ -383,5 +396,4 @@ public final class World {
 			npcRepository.remove(npc);
 		}
 	}
-
 }

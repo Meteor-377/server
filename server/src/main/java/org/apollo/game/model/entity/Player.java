@@ -20,6 +20,7 @@ import org.apollo.game.model.inter.InterfaceListener;
 import org.apollo.game.model.inter.InterfaceSet;
 import org.apollo.game.model.inter.bank.BankConstants;
 import org.apollo.game.model.inter.bank.BankInterfaceListener;
+import org.apollo.game.model.inter.dialogue.DialogueListener;
 import org.apollo.game.model.inv.*;
 import org.apollo.game.model.inv.Inventory.StackMode;
 import org.apollo.game.model.skill.LevelUpSkillListener;
@@ -27,6 +28,7 @@ import org.apollo.game.model.skill.SynchronizationSkillListener;
 import org.apollo.game.session.GameSession;
 import org.apollo.game.sync.block.SynchronizationBlock;
 import org.apollo.net.message.Message;
+import org.apollo.plugins.api.ChatEmotes;
 import org.apollo.util.CollectionUtil;
 import org.apollo.util.security.PlayerCredentials;
 
@@ -1012,4 +1014,30 @@ public final class Player extends Mob {
 		skillSet.addListener(new LevelUpSkillListener(this));
 	}
 
+	public void sendNpcDialogue(Npc npc, ChatEmotes emote, String line1, DialogueListener listener) {
+		send(new SetWidgetModelAnimationMessage(4883, emote.getAnimationId()));
+		send(new SetWidgetTextMessage(4884, npc.getDefinition().getName()));
+		send(new SetWidgetTextMessage(4885, line1));
+		send(new SetWidgetNpcModelMessage(4883, npc.getId()));
+		getInterfaceSet().openDialogue(listener, 4882);
+	}
+
+	public void sendNpc2Dialogue(Npc npc, ChatEmotes emote, String line1, String line2, DialogueListener listener) {
+		send(new SetWidgetModelAnimationMessage(4888, emote.getAnimationId()));
+		send(new SetWidgetTextMessage(4889, npc.getDefinition().getName()));
+		send(new SetWidgetTextMessage(4890, line1));
+		send(new SetWidgetTextMessage(4891, line2));
+		send(new SetWidgetNpcModelMessage(4888, npc.getId()));
+		getInterfaceSet().openDialogue(listener, 4887);
+	}
+
+	public void sendNpc3Dialogue(Npc npc, ChatEmotes emote, String line1, String line2, String line3, DialogueListener listener) {
+		send(new SetWidgetModelAnimationMessage(4894, emote.getAnimationId()));
+		send(new SetWidgetTextMessage(4895, npc.getDefinition().getName()));
+		send(new SetWidgetTextMessage(4896, line1));
+		send(new SetWidgetTextMessage(4897, line2));
+		send(new SetWidgetTextMessage(4898, line3));
+		send(new SetWidgetNpcModelMessage(4894, npc.getId()));
+		getInterfaceSet().openDialogue(listener, 4893);
+	}
 }

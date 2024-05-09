@@ -76,6 +76,8 @@ public final class InterfaceSet {
 		return dialogueListener.isPresent() && dialogueListener.get().buttonClicked(button);
 	}
 
+	public boolean canClose = true;
+
 	/**
 	 * Closes the current open interface(s).
 	 */
@@ -115,7 +117,7 @@ public final class InterfaceSet {
 	 */
 	public void continueRequested() {
 		if (dialogueListener.isPresent()) {
-			dialogueListener.get().continued();
+			dialogueListener.get().continued(player);
 		}
 	}
 
@@ -307,5 +309,4 @@ public final class InterfaceSet {
 			listener = Optional.empty();
 		}
 	}
-
 }

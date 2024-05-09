@@ -1,6 +1,7 @@
 package org.apollo.game.model.inter.dialogue;
 
 import org.apollo.game.message.handler.MessageHandlerChain;
+import org.apollo.game.model.entity.Player;
 import org.apollo.game.model.inter.InterfaceListener;
 
 /**
@@ -26,6 +27,6 @@ public interface DialogueListener extends InterfaceListener {
 	/**
 	 * Called when the player has clicked the "Click here to continue" button on a chatting dialogue.
 	 */
-	public void continued();
+	public void continued(Player player);
 
 }

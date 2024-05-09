@@ -1,5 +1,7 @@
 package org.apollo.game.model.inter.dialogue;
 
+import org.apollo.game.model.entity.Player;
+
 /**
  * An adapter for the {@link DialogueListener}.
  *
@@ -13,7 +15,7 @@ public abstract class DialogueAdapter implements DialogueListener {
 	}
 
 	@Override
-	public void continued() {
+	public void continued(Player player) {
 
 	}
 
