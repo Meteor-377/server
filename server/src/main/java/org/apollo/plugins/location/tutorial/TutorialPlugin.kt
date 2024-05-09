@@ -29,7 +29,6 @@ class TutorialPlugin(world: World, context: PluginContext) : KotlinPlugin(
 
     override fun onLogin() = { event: LoginEvent ->
         if (event.player.inTutorial()) {
-            event.player.send(PlayMidiMessage(62, 0))
             //Prevent closing dialogue when walking/interacting
             //Players should not be able to talk until completing tutorial
             event.player.interfaceSet.canClose = false
